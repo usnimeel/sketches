@@ -1,6 +1,4 @@
-import { Circle } from './circle.js';
-
-const circles = []
+import { Rings } from './rings.js';
 
 class App {
     constructor() {
@@ -14,28 +12,22 @@ class App {
         this.centerX = this.stageWidth / 2;
         this.centerY = this.stageHeight / 2;
         this.radius = 100;
-        this.gapX = 240;
+        this.gapX = 220;
         this.gapY = 100;
 
-        for(let i = 0; i < 5; i++) {
-            let x, y;
-            if(i % 2 == 0) {
-                y = this.centerY;
-                if(i == 2) {
-                    x = this.centerX;
-                } else {
-                    i < 2 ? x = this.centerX - this.gapX : x = this.centerX + this.gapX;
-                }
-            } else {
-                y = this.centerY + this.gapY;
-                i < 2 ? x = this.centerX - this.gapX / 2 : x = this.centerX + this.gapX / 2;
-            } 
-
-            circles[i] = new Circle(i, x, y, this.radius, 10)
-                // Math.floor(Math.random() * 2), Math.floor(Math.random() * 2));
-        }
+        this.rings = new Rings(
+            this.centerX,
+            this.centerY - 50,
+            this.radius,
+            this.gapX,
+            this.gapY
+        );
 
         requestAnimationFrame(this.animate.bind(this));
+
+        this.canvas.addEventListener('mousemove', e => {
+                console.log('moving');
+        });
     }
 
     resize() {
@@ -49,12 +41,7 @@ class App {
 
     animate(t) {
         requestAnimationFrame(this.animate.bind(this));
-
-        this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight); 
-
-        for(let i = 0; i < circles.length; i++) {
-            circles[i].draw(this.ctx, this.stageWidth, this.stageHeight);
-        }
+        this.rings.draw(this.ctx, this.stageWidth, this.stageHeight);
     }
 }
 
